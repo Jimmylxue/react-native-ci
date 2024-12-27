@@ -8,7 +8,7 @@ cd h5pack-native
 
 yarn --force
 
-cd /android
+cd ./android
 
 ./gradlew clean 
 
