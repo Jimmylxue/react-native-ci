@@ -37,6 +37,10 @@ jobs:
         run: |
           docker cp my_rn_container:/app/react-native-project/h5pack-native/app-release.apk /tmp/app.apk
 
+      - name: check pwd
+        run: |
+          pwd
+
       - name: check Apk
         run: |
           cd /tmp
