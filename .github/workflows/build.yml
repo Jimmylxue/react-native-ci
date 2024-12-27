@@ -37,12 +37,20 @@ jobs:
         run: |
           docker cp my_rn_container:/app/react-native-project/h5pack-native/app-release.apk /tmp/app.apk
 
+      - name: check Apk
+        run: |
+          cd /tmp
+
+      - name: check Apk2
+        run: |
+          ls
+
       - name: Upload APK to Existing Release
         uses: actions/upload-release-asset@v1
         with:
-          upload_url: https://uploads.github.com/repos/Jimmylxue/react-native-ci/releases/192439895/assets?name=my-app-apk.apk
+          upload_url: https://uploads.github.com/repos/Jimmylxue/react-native-ci/releases/192439895/assets?name=app.apk
           asset_path: /tmp/app.apk
-          asset_name: my-app-apk.apk
+          asset_name: app.apk
           asset_content_type: application/vnd.android.package-archive
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
