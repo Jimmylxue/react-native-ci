@@ -1,0 +1,27 @@
+name: 打包React-native安卓环境
+
+on:
+  push:
+    # push 代码的时候 哪个分支会受到影响 这里是 master 主分支
+    branches:
+      - main
+  workflow_dispatch:
+
+# 推送之后执行一系列的任务
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 迁出代码
+        use: actions/checkout@master
+
+      - name: Build Docker image
+        run: |
+          docker build -t RN-IMAGE .
+
+      - name: Run in Docker container
+        uses: docker://RN-IMAGE
+        with:
+        args: |
+          npx envinfo
+          sh start.sh
