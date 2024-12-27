@@ -13,33 +13,33 @@ jobs:
       - name: 迁出代码
         uses: actions/checkout@v2
 
-      - name: 缓存 Docker layers
-        uses: actions/cache@v3
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-docker-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-docker-
+      # - name: 缓存 Docker layers
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: /tmp/.buildx-cache
+      #     key: ${{ runner.os }}-docker-${{ github.sha }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-docker-
 
-      - name: Build Docker image
-        run: |
-          DOCKER_BUILDKIT=1 docker build --cache-from=type=local,src=/tmp/.buildx-cache -t rn_image .
+      # - name: Build Docker image
+      #   run: |
+      #     DOCKER_BUILDKIT=1 docker build --cache-from=type=local,src=/tmp/.buildx-cache -t rn_image .
 
-      - name: Run in Docker container
-        run: |
-          docker run --name my_rn_container rn_image sh start.sh
+      # - name: Run in Docker container
+      #   run: |
+      #     docker run --name my_rn_container rn_image sh start.sh
 
-      - name: List running containers
-        run: |
-          docker ps -a
+      # - name: List running containers
+      #   run: |
+      #     docker ps -a
 
-      - name: Copy Apk
-        run: |
-          docker cp my_rn_container:/app/react-native-project/h5pack-native/app-release.apk /home/runner/work/react-native-ci/react-native-ci/app.apk
+      # - name: Copy Apk
+      #   run: |
+      #     docker cp my_rn_container:/app/react-native-project/h5pack-native/app-release.apk /home/runner/work/react-native-ci/react-native-ci/app.apk
 
-      - name: check pwd
-        run: |
-          pwd
+      # - name: check pwd
+      #   run: |
+      #     pwd
 
       - name: check Apk
         run: |
@@ -47,7 +47,15 @@ jobs:
 
       - name: check Apk2
         run: |
+          touch app.apk
+
+      - name: check ls
+        run: |
           ls
+
+      - name: check pwd
+        run: |
+          pwd
 
       - name: Upload APK to Existing Release
         uses: actions/upload-release-asset@v1
