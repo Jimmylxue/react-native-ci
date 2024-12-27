@@ -22,8 +22,6 @@ touch app-release.apk
 
 pwd
 
-ls
-
 exit
 
 # exit
