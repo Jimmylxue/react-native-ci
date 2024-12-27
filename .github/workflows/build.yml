@@ -17,7 +17,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t RN-IMAGE .
+          docker build -t rn_image .
 
       # - name: Run in Docker container
       #   uses: docker://RN-IMAGE
@@ -28,4 +28,4 @@ jobs:
 
       - name: Run in Docker container
         run: |
-          docker run --rm RN-IMAGE sh start.sh
+          docker run --rm rn_image sh start.sh
