@@ -42,7 +42,7 @@ RUN curl -o node.tar.gz https://nodejs.org/dist/v20.14.0/node-v20.14.0-linux-x64
 ENV PATH="/usr/local/bin:${PATH}"
 
 # 设置淘宝镜像 - 这个是可选配置 github-action 自带翻墙 不用配置 如果国内用户本地docker 需要配置一下
-# RUN npm config set registry https://registry.npmmirror.com
+RUN npm config set registry https://registry.npmmirror.com
 
 # 安装yarn
 RUN npm install -g yarn@1.22.22

@@ -6,13 +6,25 @@ git clone https://github.com/Jimmylxue/h5pack-native.git
 
 cd h5pack-native
 
-yarn --force
+# yarn --force
+
+
+
+# cd /android
+
+# ./gradlew clean 
+
+# cd ..
 
 # yarn release
 
 touch app-release.apk
 
+exit
+
 docker cp my_rn_container:/app/react-native-project/h5pack-native/app-release.apk /tmp/app.apk
+
+ls
 
 # ls
 
