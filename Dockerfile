@@ -34,8 +34,7 @@ RUN apt-get update && apt-get install -y curl && apt-get clean
 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
-# RUN curl -o node.tar.gz https://nodejs.org/dist/v20.14.0/node-v20.14.0-linux-x64.tar.gz \
-RUN curl -o node.tar.gz https://nodejs.org/dist/v20.14.0/node-v20.14.0-linux-arm64.tar.gz \
+RUN curl -o node.tar.gz https://nodejs.org/dist/v20.14.0/node-v20.14.0-linux-x64.tar.gz \
   && tar -xzf node.tar.gz -C /usr/local --strip-components=1 \
   && rm node.tar.gz
 
