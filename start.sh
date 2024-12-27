@@ -24,6 +24,8 @@ pwd
 
 ls
 
+exit
+
 # exit
 
 # docker cp my_rn_container:/app/react-native-project/h5pack-native/app-release.apk /tmp/app.apk
