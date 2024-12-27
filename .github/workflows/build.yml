@@ -19,9 +19,13 @@ jobs:
         run: |
           docker build -t RN-IMAGE .
 
+      # - name: Run in Docker container
+      #   uses: docker://RN-IMAGE
+      #   with:
+      #   args: |
+      #     npx envinfo
+      #     sh start.sh
+
       - name: Run in Docker container
-        uses: docker://RN-IMAGE
-        with:
-        args: |
-          npx envinfo
-          sh start.sh
+        run: |
+          docker run --rm RN-IMAGE sh start.sh
