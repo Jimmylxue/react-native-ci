@@ -6,6 +6,6 @@ git clone https://github.com/Jimmylxue/h5pack-core
 
 cd h5pack-core
 
-yarn
+yarn --force
 
 yarn release
