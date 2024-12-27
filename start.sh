@@ -9,3 +9,11 @@ cd h5pack-native
 yarn --force
 
 yarn release
+
+exit
+
+docker cp my_rn_container:/app/react-native-project/h5pack-native/android/app/build/outputs/apk/release/app-release.apk /tmp/app.apk
+
+cd /tmp
+
+ls
