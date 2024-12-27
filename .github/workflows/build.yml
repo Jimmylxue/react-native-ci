@@ -47,7 +47,7 @@ jobs:
 
       - name: check Apk2
         run: |
-          touch app.apk
+          touch apps.apk
 
       - name: check ls
         run: |
