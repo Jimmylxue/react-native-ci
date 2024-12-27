@@ -6,19 +6,15 @@ git clone https://github.com/Jimmylxue/h5pack-native.git
 
 cd h5pack-native
 
-# yarn --force
+yarn --force
 
+cd /android
 
+./gradlew clean 
 
-# cd /android
+cd ..
 
-# ./gradlew clean 
-
-# cd ..
-
-# yarn release
-
-touch app-release.apk
+yarn release
 
 pwd
 

@@ -13,56 +13,28 @@ jobs:
       - name: 迁出代码
         uses: actions/checkout@v2
 
-      # - name: 缓存 Docker layers
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: /tmp/.buildx-cache
-      #     key: ${{ runner.os }}-docker-${{ github.sha }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-docker-
-
-      # - name: Build Docker image
-      #   run: |
-      #     DOCKER_BUILDKIT=1 docker build --cache-from=type=local,src=/tmp/.buildx-cache -t rn_image .
-
-      # - name: Run in Docker container
-      #   run: |
-      #     docker run --name my_rn_container rn_image sh start.sh
-
-      # - name: List running containers
-      #   run: |
-      #     docker ps -a
-
-      # - name: Copy Apk
-      #   run: |
-      #     docker cp my_rn_container:/app/react-native-project/h5pack-native/app-release.apk /home/runner/work/react-native-ci/react-native-ci/app.apk
-
-      # - name: check pwd
-      #   run: |
-      #     pwd
-
-      - name: check Apk
+      - name: Build Docker image
         run: |
-          cd /home/runner/work/react-native-ci/react-native-ci
+          docker build -t rn_image .
 
-      - name: check Apk2
+      - name: Run in Docker container
         run: |
-          touch apps.apk
+          docker run --name my_rn_container rn_image sh start.sh
+
+      - name: Copy Apk
+        run: |
+          docker cp my_rn_container:/app/react-native-project/h5pack-native/android/app/build/outputs/apk/release/app-release.apk /tmp/app.apk /home/runner/work/react-native-ci/react-native-ci/app.apk
 
       - name: check ls
         run: |
           ls
 
-      - name: check pwd
-        run: |
-          pwd
-
       - name: Upload APK to Existing Release
         uses: actions/upload-release-asset@v1
         with:
-          upload_url: https://uploads.github.com/repos/Jimmylxue/react-native-ci/releases/192439895/assets?name=name=${{ github.run_id }}-${{ github.run_number }}.apk
+          upload_url: https://uploads.github.com/repos/Jimmylxue/react-native-ci/releases/192439895/assets?name=${{ github.run_id }}-${{ github.run_number }}.apk
           asset_path: /home/runner/work/react-native-ci/react-native-ci/app.apk
-          asset_name: name=${{ github.run_id }}-${{ github.run_number }}.apk
+          asset_name: ${{ github.run_id }}-${{ github.run_number }}.apk
           asset_content_type: application/vnd.android.package-archive
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
