@@ -8,16 +8,20 @@ cd h5pack-native
 
 yarn --force
 
-yarn release
+# yarn release
 
-ls
+touch app-release.apk
 
-docker cp my_rn_container:/app/react-native-project/h5pack-native/android/app/build/outputs/apk/release/app-release.apk /tmp/app.apk
+docker cp my_rn_container:/app/react-native-project/h5pack-native/app-release.apk /tmp/app.apk
 
-exit
+# ls
 
-docker cp my_rn_container:/app/react-native-project/h5pack-native/android/app/build/outputs/apk/release/app-release.apk /tmp/app.apk
+# docker cp my_rn_container:/app/react-native-project/h5pack-native/android/app/build/outputs/apk/release/app-release.apk /tmp/app.apk
 
-cd /tmp
+# exit
 
-ls
+# docker cp my_rn_container:/app/react-native-project/h5pack-native/android/app/build/outputs/apk/release/app-release.apk /tmp/app.apk
+
+# cd /tmp
+
+# ls
