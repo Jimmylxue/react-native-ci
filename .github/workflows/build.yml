@@ -27,7 +27,11 @@ jobs:
 
       - name: Run in Docker container
         run: |
-          docker run --rm --name my_rn_container rn_image sh start.sh
+          docker run --name my_rn_container rn_image sh start.sh
+
+      - name: List running containers
+        run: |
+          docker ps -a
 
       - name: Copy Apk
         run: |
