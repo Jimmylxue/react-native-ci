@@ -30,11 +30,11 @@ jobs:
         run: |
           docker run --rm --name my_rn_container rn_image sh start.sh
 
-      - name: Upload APK to GitHub Releases
-        uses: actions/upload-artifact@v2
-        with:
-          name: my-app-apk
-          path: android/app/build/outputs/apk/release/app-release.apk
+      # - name: Upload APK to GitHub Releases
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: my-app-apk
+      #     path: android/app/build/outputs/apk/release/app-release.apk
 
       # - name: Create Release
       #   id: create_release
