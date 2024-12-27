@@ -1,40 +1,57 @@
-## Docker 相关
+# react-native-ci
 
-- 一个 Dockerfile 只能有一个 FROM
+欢迎使用 **react-native-ci** 项目！本项目旨在提供一个高效的自动化打包解决方案，专为 React Native 应用程序设计。通过简单的配置，您可以快速实现 CI/CD 流程，确保应用的持续集成与交付。
 
-### 脚本指令
+## 快速开始
 
-- 构建镜像：`docker build -t react-native-app .`
+### 1. Fork 本项目
 
-- 运行镜像：`docker run -it --rm react-native-app`
+首先，点击右上角的 "Fork" 按钮，将本项目复制到您的 GitHub 账户中。
 
-- 动态传入脚本：`docker run -v /Users/jimmy/Desktop/code/docker/jdk/start.sh:/app/start.sh -p 8080:8080 react-native-app`
+### 2. 修改配置
 
-- 持续输入：`docker run -it -v /Users/jimmy/Desktop/code/docker/jdk/start.sh:/app/start.sh -p 8080:8080 react-native-app /bin/bash`
+在您的 forked 仓库中，您需要进行以下几个文件做单独的配置：
 
-- 创建容器：`docker run -d --name 容器名 镜像名`，如:`docker run -d --name testrn react-native-app`
+- **Dockerfile**
 
-- 启动容器：`docker start 容器名`，如`docker start testrn`
+  根据 react-native 的版本，可自行修改`openjdk`、`nodejs`、`android-platform`、`android-build-tools`、`cmake`、`ndk版本`
 
-- 进入容器 cmd:`docker exec -it 容器名 bash`，如`docker exec -it testrn bash`
+  具体各个 react-native 版本需要对应的版本配置可前往 [react-native 版本配置中查看](https://reactnative.dev/docs/set-up-your-environment)
 
-#### 推荐使用
+- **start.sh**
 
-- 启动容器：`docker run -d --name demo  react-native-app tail -f /dev/null`
+  打包构建的核心 shell 脚本，在这个脚本文件中做各自的脚本配置、修改代码仓库、以及各自的打包指令
 
-  > -d 就是表示在后台持续运行
+- **build.yml**
 
-- 进入容器：`docker exec -it demo /bin/bash`
+  核心的 CI 文件，在这个文件中需要以各自的项目做对应的修改配置：
 
-- rn 加速下载代码：`find node_modules/ -type f \( -name "*.kts" -o -name "*.gradle" \) -exec sed -i 's|mavenCentral()|maven { url = uri("https://maven.aliyun.com/repository/central") }\n    maven { url = uri("https://maven.aliyun.com/repository/public") }\n    maven { url = uri("https://maven.aliyun.com/repository/google") }\n    maven { url = uri("https://maven.aliyun.com/repository/gradle-plugin") }\n    maven { url = uri("https://maven.aliyun.com/repository/jcenter") }\n    mavenCentral()|g' {} +
-`
+  - 修改 `Copy Apk` step
 
-## CI 相关
+    `docker cp my_rn_container:/app/react-native-project/h5pack-native/android/app/build/outputs/apk/release/app-release.apk /home/runner/work/react-native-ci/react-native-ci/app.apk`
 
-### 获取 github Release 信息
+    这个文件两个路径需要做各自项目的对应修改。
 
-我们的 CI 处理了，将打包出的 apk 包上传至 Github Release，这里会需要用到 release_id，可以在这个 api 上查看信息
+  - 修改 `Upload APK to Existing Release` step
 
-`https://api.github.com/repos/Jimmylxue/react-native-ci/releases`
+    - **upload_url**
 
-其中，用户名、仓库名可自行修改
+      这个需要修改为您的仓库 release 的 upload_url，先创建一个 release，然后做对应的修改，url 规范为：`https://uploads.github.com/repos/{用户名}/{仓库名}/releases/{releaseId}/assets?name=${{ github.run_number }}-${{ github.run_id }}.apk`
+
+      其中获取 releaseId，可以访问：`https://api.github.com/repos/{用户名}/{仓库名}/releases`获取
+
+    - **asset_path**
+
+      同`Copy Apk`step，不做过多讲解
+
+    - **GITHUB_TOKEN**
+
+      生成一个 github 账号的 token，并给上足够的权限，添加至 `secrets`中
+
+### 3. 自动化打包
+
+完成配置后，你可以通过 `github-action` 完成自动化打包。每当你推送代码、或主动执行打包指令时，系统将自动构建你的 `Docker` 镜像。完成打包，并将打包结果的 apk 上传至 `github-release` 中
+
+## 贡献
+
+欢迎任何形式的贡献！如果你有建议或问题，请随时提交 issue 或 pull request。
