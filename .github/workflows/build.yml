@@ -32,18 +32,7 @@ on:
         required: true
         default: '3.22.1'
       install_dependencies:
-        description: '是否安装依赖'
-        required: true
-        default: 'true'
-      build_type:
-        description: '构建类型'
-        required: true
-        default: 'release'
-      build_flavor:
-        description: '构建风味'
-        required: true
-      install_dependencies:
-        description: '安装依赖'
+        description: '安装依赖的命令'
         required: true
         default: 'yarn --force'
       build_command:
