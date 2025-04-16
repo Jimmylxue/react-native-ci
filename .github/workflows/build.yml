@@ -2,6 +2,54 @@ name: 打包React-native安卓环境
 
 on:
   workflow_dispatch:
+    inputs:
+      repo_url:
+        description: '项目仓库地址'
+        required: true
+        default: 'https://github.com/Jimmylxue/h5pack-native.git'
+      node_version:
+        description: 'Node.js 版本'
+        required: true
+        default: '20.14.0'
+      jdk_version:
+        description: 'JDK 版本'
+        required: true
+        default: '17'
+      android_sdk_version:
+        description: 'Android SDK 版本'
+        required: true
+        default: '34'
+      android_build_tools_version:
+        description: 'Android Build Tools 版本'
+        required: true
+        default: '34.0.0'
+      android_ndk_version:
+        description: 'Android NDK 版本'
+        required: true
+        default: '26.1.10909125'
+      cmake_version:
+        description: 'CMake 版本'
+        required: true
+        default: '3.22.1'
+      install_dependencies:
+        description: '是否安装依赖'
+        required: true
+        default: 'true'
+      build_type:
+        description: '构建类型'
+        required: true
+        default: 'release'
+      build_flavor:
+        description: '构建风味'
+        required: true
+      install_dependencies:
+        description: '安装依赖'
+        required: true
+        default: 'yarn --force'
+      build_command:
+        description: '构建命令'
+        required: true
+        default: 'yarn release'
 
 jobs:
   build:
@@ -12,11 +60,22 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t rn_image .
+          docker build -t rn_image \
+            --build-arg NODE_VERSION=${{ github.event.inputs.node_version }} \
+            --build-arg JDK_VERSION=${{ github.event.inputs.jdk_version }} \
+            --build-arg ANDROID_SDK_VERSION=${{ github.event.inputs.android_sdk_version }} \
+            --build-arg ANDROID_BUILD_TOOLS_VERSION=${{ github.event.inputs.android_build_tools_version }} \
+            --build-arg ANDROID_NDK_VERSION=${{ github.event.inputs.android_ndk_version }} \
+            --build-arg CMAKE_VERSION=${{ github.event.inputs.cmake_version }} \
+            .
 
       - name: Run in Docker container
         run: |
-          docker run --name my_rn_container rn_image sh start.sh
+          docker run --name my_rn_container \
+            -e REPO_URL=${{ github.event.inputs.repo_url }} \
+            -e INSTALL_DEPENDENCIES="${{ github.event.inputs.install_dependencies }}" \
+            -e BUILD_COMMAND="${{ github.event.inputs.build_command }}" \
+            rn_image sh start.sh
 
       - name: Copy Apk
         run: |

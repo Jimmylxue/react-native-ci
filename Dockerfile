@@ -1,12 +1,20 @@
 FROM ubuntu:latest
 
+# 定义构建参数
+ARG NODE_VERSION=20.14.0
+ARG JDK_VERSION=17
+ARG ANDROID_SDK_VERSION=34
+ARG ANDROID_BUILD_TOOLS_VERSION=34.0.0
+ARG ANDROID_NDK_VERSION=26.1.10909125
+ARG CMAKE_VERSION=3.22.1
+
 # 设置 安卓 环境变量
 ENV ANDROID_SDK_ROOT=/opt/android-sdk
 ENV PATH=${PATH}:${ANDROID_SDK_ROOT}/tools:${ANDROID_SDK_ROOT}/platform-tools:${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin
 
-# 安装必要的工具和 OpenJDK 17
+# 安装必要的工具和 OpenJDK
 RUN apt-get update && \
-  apt-get install -y openjdk-17-jdk git wget unzip && \
+  apt-get install -y openjdk-${JDK_VERSION}-jdk git wget unzip && \
   apt-get clean
 
 # 下载并安装 Android SDK Command-Line Tools
@@ -17,24 +25,24 @@ RUN mkdir -p ${ANDROID_SDK_ROOT}/cmdline-tools && \
   rm commandlinetools-linux-11076708_latest.zip && \
   mv cmdline-tools latest
 
-# 安装 Android SDK Platform 34
-RUN yes | sdkmanager --sdk_root=${ANDROID_SDK_ROOT} "platforms;android-34"
+# 安装 Android SDK Platform
+RUN yes | sdkmanager --sdk_root=${ANDROID_SDK_ROOT} "platforms;android-${ANDROID_SDK_VERSION}"
 
-# 安装 Android SDK Build-Tools 34.0.0
-RUN yes | sdkmanager --sdk_root=${ANDROID_SDK_ROOT} "build-tools;34.0.0"
+# 安装 Android SDK Build-Tools
+RUN yes | sdkmanager --sdk_root=${ANDROID_SDK_ROOT} "build-tools;${ANDROID_BUILD_TOOLS_VERSION}"
 
 # 安装 cmake
-RUN yes | sdkmanager --sdk_root=${ANDROID_SDK_ROOT} "cmake;3.22.1"
+RUN yes | sdkmanager --sdk_root=${ANDROID_SDK_ROOT} "cmake;${CMAKE_VERSION}"
 
 # 安装 ndk
-RUN yes | sdkmanager --sdk_root=${ANDROID_SDK_ROOT} "ndk;26.1.10909125"
+RUN yes | sdkmanager --sdk_root=${ANDROID_SDK_ROOT} "ndk;${ANDROID_NDK_VERSION}"
 
 # 安装 Git
 RUN apt-get update && apt-get install -y curl && apt-get clean
 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
-RUN curl -o node.tar.gz https://nodejs.org/dist/v20.14.0/node-v20.14.0-linux-x64.tar.gz \
+RUN curl -o node.tar.gz https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.gz \
   && tar -xzf node.tar.gz -C /usr/local --strip-components=1 \
   && rm node.tar.gz
 
