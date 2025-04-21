@@ -6,9 +6,9 @@ if [ -z "$REPO_URL" ]; then
     exit 1
 fi
 
-mkdir react-native-project
+mkdir smart-pos
 
-cd react-native-project
+cd smart-pos
 
 # 使用环境变量中的项目地址进行克隆
 git clone $REPO_URL
@@ -22,12 +22,9 @@ cd $REPO_NAME
 # 安装依赖
 $INSTALL_DEPENDENCIES
 
-cd ./android
+yarn
 
-# 清打包缓存
-./gradlew clean 
-
-cd ../
+cd ./packages/lion
 
 $BUILD_COMMAND
 
